@@ -13,8 +13,15 @@ if __name__ == "__main__":
     settings = configparser.ConfigParser()
     settings.read('client_configuration.ini')
     private_key_path = settings.get('private-key', 'path')
-    
+
     platform_type = settings.get('platform-configuration', 'type')
     read_function = get_read_function(platform_type)
-    
-    print(decrypt_ip(private_key_path, read_function(), getpass.getpass()))
+
+    while True:
+        try:
+            print(decrypt_ip(private_key_path, read_function(),
+                  getpass.getpass()))
+        except ValueError:
+            print("Wrong key, try again")
+        else:
+            break
